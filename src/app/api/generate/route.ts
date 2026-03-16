@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+export const dynamic = "force-dynamic";
+
+function getOpenAI() {
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
 
 export async function POST(req: NextRequest) {
   const { url } = await req.json();
@@ -18,6 +22,7 @@ export async function POST(req: NextRequest) {
 
     const prompt = `Erstelle 3 Social-Media-Posts auf Deutsch:\nTitel: ${title}\nBeschreibung: ${desc}\nFuer: Instagram, LinkedIn, X.\n- Max 280 Zeichen pro Post\n- 5-7 Hashtags\n- Call-to-Action\n- Bildvorschlag in Klammern`;
 
+    const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
