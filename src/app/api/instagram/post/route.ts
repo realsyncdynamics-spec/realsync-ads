@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const IG_USER_ID = process.env.INSTAGRAM_IG_USER_ID;
-const IG_TOKEN = process.env.INSTAGRAM_LONG_LIVED_TOKEN;
-const DEFAULT_IMAGE_URL = process.env.INSTAGRAM_DEFAULT_IMAGE_URL;
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
+    const IG_USER_ID = process.env.INSTAGRAM_IG_USER_ID;
+    const IG_TOKEN = process.env.INSTAGRAM_LONG_LIVED_TOKEN;
+    const DEFAULT_IMAGE_URL = process.env.INSTAGRAM_DEFAULT_IMAGE_URL;
+
     const { caption, imageUrl } = await req.json();
     if (!caption) return NextResponse.json({ error: "caption fehlt" }, { status: 400 });
     if (!IG_USER_ID || !IG_TOKEN) return NextResponse.json({ error: "Instagram env vars missing" }, { status: 500 });
